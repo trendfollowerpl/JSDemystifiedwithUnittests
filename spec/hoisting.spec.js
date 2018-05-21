@@ -1,4 +1,4 @@
-describe('hoisting', function(){
+describe('variable hoisting', function(){
     it('example 1', function () {
         expect(x).toBeUndefined();
         var x;
@@ -13,3 +13,56 @@ describe('hoisting', function(){
         expect(y).toEqual(10);
     });
 });
+
+describe('function hoisting', function () {
+
+
+    it('example 1', function () {
+        expect(sayHello()).toEqual('HI');
+
+        function sayHello () {
+            function hello () {
+                return 'Hello!';
+            }
+
+            return hello(); //!!!
+
+            function hello () {
+                return 'HI';
+            }
+        }
+
+
+    });
+
+    it('example 2', function () {
+        expect(sayHello()).toEqual('Hello!');
+        function sayHello () {
+            function hello () {
+                return 'Hello!';
+            }
+
+            return hello(); //!!!
+
+            var hello = function() {
+                return 'HI';
+            };
+        }
+    });
+
+    it('function expressions are not hoisted', function () {
+        expect(()=>sayHello()).toThrow(); //TypeError: sayHello is not a function
+
+        var sayHello = function() {
+            function hello () {
+                return 'Hello!';
+            }
+
+            return hello(); //!!!
+
+            function hello () {
+                return 'HI';
+            }
+        };
+    });
+});``
